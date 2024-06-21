@@ -39,6 +39,12 @@
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
         <dependency>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo.spring3x</artifactId>
+            <version>4.13.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
@@ -72,6 +78,9 @@
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>
+                    <systemPropertyVariables>
+                        <de.flapdoodle.os.override>Linux|X86_64|CentOS|CentOS_9</de.flapdoodle.os.override>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>
