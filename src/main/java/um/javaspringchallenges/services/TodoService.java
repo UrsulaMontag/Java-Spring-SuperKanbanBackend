@@ -31,4 +31,14 @@ public class TodoService {
         Todo todoToCreate = new Todo(utilService.generateId(), todo.description(), TodoStatus.OPEN);
         return todos.save(todoToCreate);
     }
+
+    public void updateTodo(String id, TodoDTO todo) throws NullPointerException, InvalidIDException {
+        if (todos.existsById(id)) {
+            Todo todoToUpdate = todos.findById(id)
+                    .orElseThrow(() -> new InvalidIDException("Todo not found!"))
+                    .withDescription(todo.description())
+                    .withStatus(todo.status());
+            todos.save(todoToUpdate);
+        }
+    }
 }

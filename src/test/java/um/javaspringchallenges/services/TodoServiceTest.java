@@ -67,4 +67,15 @@ class TodoServiceTest {
         todoService.createTodo(givenTodo);
         verify(mockTodoRepo).save(expected);
     }
+
+    @Test
+    void updateTodo_updatesExistingTodo_foundByGivenID() throws InvalidIDException {
+        TodoDTO updatedTodo = new TodoDTO("I am the first test todo and being updated", TodoStatus.OPEN);
+        String updateId = "2";
+        Todo expected = new Todo("2", updatedTodo.description(), updatedTodo.status());
+        when(mockTodoRepo.existsById(updateId)).thenReturn(true);
+        when(mockTodoRepo.findById(updateId)).thenReturn(Optional.of(expected));
+        todoService.updateTodo(updateId, updatedTodo);
+        verify(mockTodoRepo).save(expected);
+    }
 }
