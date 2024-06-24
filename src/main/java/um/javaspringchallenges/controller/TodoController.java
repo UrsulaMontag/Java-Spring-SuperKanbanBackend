@@ -37,4 +37,10 @@ public class TodoController {
     public ResponseEntity<Todo> updateTodo(@PathVariable("id") String id, @RequestBody Todo todo) throws InvalidIDException {
         return new ResponseEntity<>(todoService.updateTodo(id, todo), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteTodo(@PathVariable("id") String id) throws InvalidIDException {
+        todoService.deleteTodo(id);
+        return new ResponseEntity<>("Todo deleted successfully", HttpStatus.OK);
+    }
 }

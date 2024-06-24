@@ -129,4 +129,12 @@ class TodoControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"));
     }
+
+    @Test
+    void deleteTodo_returnsStringDeletedSuccessfully() throws Exception {
+        Todo existingTodo = todoRepo.save(new Todo("123", "Test todo 1", TodoStatus.OPEN));
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/todo/" + existingTodo.id()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Todo deleted successfully"));
+    }
 }
