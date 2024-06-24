@@ -1,9 +1,11 @@
 package um.javaspringchallenges.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -24,6 +26,14 @@ class TodoControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private TodoRepo todoRepo;
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Test
     void getAllTodos() throws NullPointerException {
@@ -67,4 +77,19 @@ class TodoControllerTest {
         }
     }
 
+    @Test
+    void createTodo_returnsNewCreatedTodo_withRandomID() throws NullPointerException {
+        Todo testTodo = new Todo("123", "Test todo 1", TodoStatus.OPEN);
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.post("/api/todo")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(asJsonString(testTodo)))
+                    .andExpect(MockMvcResultMatchers.status().isCreated())
+                    .andExpect(MockMvcResultMatchers.content().contentType("application/json"));
+        } catch (NullPointerException e) {
+            throw new NullPointerException(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
