@@ -37,28 +37,28 @@ class TodoControllerTest {
             mockMvc.perform(MockMvcRequestBuilders.get("/api/todo"))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andExpect(MockMvcResultMatchers.content().json("""
-                                                        [
-                                                          {
-                                                          "id": "1",
-                                                          "description": "Test todo 1",
-                                                          "status": "OPEN"
-                                                          },
-                                                          {
-                                                          "id": "2",
-                                                          "description": "Test todo 2",
-                                                          "status": "IN_PROGRESS"
-                                                          },
-                                                          {
-                                                          "id": "3",
-                                                          "description": "Test todo 3",
-                                                          "status": "IN_PROGRESS"
-                                                          },
-                                                          {
-                                                          "id": "4",
-                                                          "description": "Test todo 4",
-                                                          "status": "COMPLETED"
-                                                          }
-                                                        ]
+                                 [
+                                      {
+                                      "id": "1",
+                                      "description": "Test todo 1",
+                                      "status": "OPEN"
+                                      },
+                                      {
+                                      "id": "2",
+                                      "description": "Test todo 2",
+                                      "status": "IN_PROGRESS"
+                                      },
+                                      {
+                                      "id": "3",
+                                      "description": "Test todo 3",
+                                      "status": "IN_PROGRESS"
+                                      },
+                                      {
+                                      "id": "4",
+                                      "description": "Test todo 4",
+                                      "status": "COMPLETED"
+                                      }
+                                 ]
                             """));
         } catch (NullPointerException e) {
             throw new NullPointerException(e.getMessage());
