@@ -36,7 +36,7 @@ class TodoServiceTest {
             add(new Todo("2", "Test todo 2", TodoStatus.OPEN));
             add(new Todo("3", "Test todo 3", TodoStatus.IN_PROGRESS));
             add(new Todo("4", "Test todo 4", TodoStatus.IN_PROGRESS));
-            add(new Todo("5", "Test todo 5", TodoStatus.COMPLETED));
+            add(new Todo("5", "Test todo 5", TodoStatus.DONE));
         }};
     }
 
@@ -77,5 +77,17 @@ class TodoServiceTest {
         when(mockTodoRepo.findById(updateId)).thenReturn(Optional.of(expected));
         todoService.updateTodo(updateId, updatedTodo);
         verify(mockTodoRepo).save(expected);
+    }
+
+    @Test
+    void deleteTodo_deletesExistingTodo_foundByGivenID() throws InvalidIDException {
+        String deleteId = "2";
+        Todo deleted = (new Todo("2", "Test todo 2", TodoStatus.OPEN));
+
+        when(mockTodoRepo.existsById(deleteId)).thenReturn(true);
+        when(mockTodoRepo.findById(deleteId)).thenReturn(Optional.of(deleted));
+        when(mockTodoRepo.findById(deleteId)).thenReturn(Optional.of(testTodoList.get(1)));
+        todoService.deleteTodo(deleteId);
+        verify(mockTodoRepo, times(1)).deleteById(deleteId);
     }
 }

@@ -44,7 +44,7 @@ class TodoControllerTest {
                 (new Todo("1", "Test todo 1", TodoStatus.OPEN)),
                 (new Todo("2", "Test todo 2", TodoStatus.IN_PROGRESS)),
                 (new Todo("3", "Test todo 3", TodoStatus.IN_PROGRESS)),
-                (new Todo("4", "Test todo 4", TodoStatus.COMPLETED))
+                (new Todo("4", "Test todo 4", TodoStatus.DONE))
         ));
         try {
             mockMvc.perform(MockMvcRequestBuilders.get("/api/todo"))
@@ -69,7 +69,7 @@ class TodoControllerTest {
                                       {
                                       "id": "4",
                                       "description": "Test todo 4",
-                                      "status": "COMPLETED"
+                                      "status": "DONE"
                                       }
                                  ]
                             """));

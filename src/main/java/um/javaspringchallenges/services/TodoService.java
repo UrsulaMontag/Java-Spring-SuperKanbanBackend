@@ -44,4 +44,9 @@ public class TodoService {
         return todoToUpdate;
 
     }
+
+    public void deleteTodo(String id) throws InvalidIDException {
+        if (todos.existsById(id)) todos.deleteById(id);
+        else throw new InvalidIDException("Did you delete this earlier?");
+    }
 }
