@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import um.javaspringchallenges.exceptions.InvalidIDException;
 import um.javaspringchallenges.models.Todo;
 import um.javaspringchallenges.models.dto.TodoDTO;
 import um.javaspringchallenges.services.TodoService;
@@ -20,6 +21,11 @@ public class TodoController {
     @GetMapping
     public ResponseEntity<List<Todo>> getAllTodos() throws NullPointerException {
         return new ResponseEntity<>(todoService.getAllTodos(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Todo> getTodoById(@PathVariable String id) throws InvalidIDException {
+        return new ResponseEntity<>(todoService.getTodoById(id), HttpStatus.OK);
     }
 
     @PostMapping

@@ -10,6 +10,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import um.javaspringchallenges.exceptions.InvalidIDException;
 import um.javaspringchallenges.models.Todo;
 import um.javaspringchallenges.models.TodoStatus;
 import um.javaspringchallenges.repository.TodoRepo;
@@ -36,7 +37,7 @@ class TodoControllerTest {
     }
 
     @Test
-    void getAllTodos() throws NullPointerException {
+    void getAllTodos_returnsListOfExistingTodos() throws NullPointerException {
         todoRepo.saveAll(List.of(
                 (new Todo("1", "Test todo 1", TodoStatus.OPEN)),
                 (new Todo("2", "Test todo 2", TodoStatus.IN_PROGRESS)),
@@ -72,6 +73,28 @@ class TodoControllerTest {
                             """));
         } catch (NullPointerException e) {
             throw new NullPointerException(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void getTodoById() throws InvalidIDException {
+        todoRepo.saveAll(List.of(
+                (new Todo("2", "Test todo 2", TodoStatus.IN_PROGRESS))
+        ));
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get("/api/todo/2"))
+                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.content().json("""
+                                      {
+                                      "id": "2",
+                                      "description": "Test todo 2",
+                                      "status": "IN_PROGRESS"
+                                      }
+                            """));
+        } catch (InvalidIDException e) {
+            throw new InvalidIDException(e.getMessage());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
