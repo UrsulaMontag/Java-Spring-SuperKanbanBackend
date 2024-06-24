@@ -26,6 +26,8 @@ class TodoControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
+    private ObjectMapper objectMapper;
+    @Autowired
     private TodoRepo todoRepo;
 
     public static String asJsonString(final Object obj) {
@@ -79,7 +81,7 @@ class TodoControllerTest {
     }
 
     @Test
-    void getTodoById() throws InvalidIDException {
+    void getTodoById_returnsSingleTodo_foundById() throws InvalidIDException {
         todoRepo.saveAll(List.of(
                 (new Todo("2", "Test todo 2", TodoStatus.IN_PROGRESS))
         ));
@@ -114,5 +116,17 @@ class TodoControllerTest {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Test
+    void updateTodo_returnsEdited_withSameID() throws Exception {
+        Todo testTodo = todoRepo.save(new Todo("123", "Test todo 1", TodoStatus.OPEN));
+        Todo updatedTodo = new Todo(testTodo.id(), "Updated todo", TodoStatus.OPEN);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/todo/" + testTodo.id())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedTodo)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"));
     }
 }

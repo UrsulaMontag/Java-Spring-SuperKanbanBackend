@@ -70,7 +70,7 @@ class TodoServiceTest {
 
     @Test
     void updateTodo_updatesExistingTodo_foundByGivenID() throws InvalidIDException {
-        TodoDTO updatedTodo = new TodoDTO("I am the first test todo and being updated", TodoStatus.OPEN);
+        Todo updatedTodo = new Todo("2", "I am the first test todo and being updated", TodoStatus.OPEN);
         String updateId = "2";
         Todo expected = new Todo("2", updatedTodo.description(), updatedTodo.status());
         when(mockTodoRepo.existsById(updateId)).thenReturn(true);

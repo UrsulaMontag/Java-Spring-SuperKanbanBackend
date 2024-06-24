@@ -32,13 +32,16 @@ public class TodoService {
         return todos.save(todoToCreate);
     }
 
-    public void updateTodo(String id, TodoDTO todo) throws NullPointerException, InvalidIDException {
+    public Todo updateTodo(String id, Todo todo) throws NullPointerException, InvalidIDException {
+        Todo todoToUpdate = null;
         if (todos.existsById(id)) {
-            Todo todoToUpdate = todos.findById(id)
+            todoToUpdate = todos.findById(id)
                     .orElseThrow(() -> new InvalidIDException("Todo not found!"))
                     .withDescription(todo.description())
                     .withStatus(todo.status());
             todos.save(todoToUpdate);
         }
+        return todoToUpdate;
+
     }
 }

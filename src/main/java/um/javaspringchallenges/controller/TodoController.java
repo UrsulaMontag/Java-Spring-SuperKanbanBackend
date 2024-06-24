@@ -32,4 +32,9 @@ public class TodoController {
     public ResponseEntity<Todo> createTodo(@RequestBody TodoDTO todo) throws NullPointerException {
         return new ResponseEntity<>(todoService.createTodo(todo), HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Todo> updateTodo(@PathVariable("id") String id, @RequestBody Todo todo) throws InvalidIDException {
+        return new ResponseEntity<>(todoService.updateTodo(id, todo), HttpStatus.OK);
+    }
 }
