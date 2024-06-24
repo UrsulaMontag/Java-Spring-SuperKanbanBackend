@@ -3,6 +3,7 @@ package um.javaspringchallenges.services;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
+import um.javaspringchallenges.exceptions.InvalidIDException;
 import um.javaspringchallenges.models.Todo;
 import um.javaspringchallenges.models.TodoStatus;
 import um.javaspringchallenges.models.dto.TodoDTO;
@@ -10,6 +11,7 @@ import um.javaspringchallenges.repository.TodoRepo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -47,6 +49,13 @@ class TodoServiceTest {
             throw new NullPointerException(e.getMessage());
         }
         verify(mockTodoRepo).findAll();
+    }
+
+    @Test
+    void getTodoById_returnsSingleTodo_foundByGivenID() throws InvalidIDException {
+        when(mockTodoRepo.findById("2")).thenReturn(Optional.of(testTodoList.get(1)));
+        todoService.getTodoById("2");
+        verify(mockTodoRepo).findById("2");
     }
 
     @Test

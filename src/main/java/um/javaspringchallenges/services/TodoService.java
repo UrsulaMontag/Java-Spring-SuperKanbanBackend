@@ -2,6 +2,7 @@ package um.javaspringchallenges.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import um.javaspringchallenges.exceptions.InvalidIDException;
 import um.javaspringchallenges.models.Todo;
 import um.javaspringchallenges.models.TodoStatus;
 import um.javaspringchallenges.models.dto.TodoDTO;
@@ -20,6 +21,10 @@ public class TodoService {
         List<Todo> response = todos.findAll();
         if (!response.isEmpty()) return response;
         else throw new NullPointerException("No todos left for you! Enjoy your leisure!");
+    }
+
+    public Todo getTodoById(String id) throws InvalidIDException {
+        return todos.findById(id).orElseThrow(() -> new InvalidIDException("No todo found!"));
     }
 
     public Todo createTodo(TodoDTO todo) throws NullPointerException {
